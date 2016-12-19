@@ -492,7 +492,6 @@
             });
           }
           return results;
-          break;
         case 102:
           return 'nothing happened, waiting for next loop';
         case 116:
@@ -548,13 +547,19 @@
     QQBot.prototype._on_message = function(event, msg_type) {
       var msg, replied, reply, value;
       value = event.value;
+
+      // message schema
       msg = {
+        at: null,
         content: value.content.slice(-1).pop(), //.trim(),
         time: new Date(value.time * 1000),
         from_uin: value.from_uin,
         type: msg_type,
         uid: value.msg_id
       };
+      if (value.content.length == 4) {
+        msg.at = value.content[1];
+      }
       if (msg_type === MsgType.Group) {
         msg.from_gid = msg.from_uin;
         msg.group_code = value.group_code;

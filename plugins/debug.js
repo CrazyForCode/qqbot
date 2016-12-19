@@ -7,15 +7,21 @@
   run method
  */
 
+var config = require('../config');
+
 (function() {
   module.exports = function(content, send, robot, message) {
+    if (message.from_user.account != config.admin) {
+      return;
+    }
+
     var group, method, msg, ref, ret, to, type;
     if (content.match(/^die$/i)) {
       robot.die("debug");
     }
     if (content.match(/^reload$/i)) {
       robot.dispatcher.reload_plugin();
-      send("重新加载插件");
+      send("重新加载插件 OK (q๑•̀ω•́)و✧");
     }
     if (content.match(/^relogin$/i)) {
       robot.relogin(function(success) {

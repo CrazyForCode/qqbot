@@ -1,0 +1,31 @@
+# rename this file to config.yaml before start
+
+# qqbot account, not needed anymore for qrcode authentication
+admin: 
+account:  
+password: ""
+at: "@"
+nickname: ""
+
+# server to view verification code, not required for mac
+port: 3123
+host: localhost
+
+# message handling, ignore offline message 20 min ago
+# offline_msg_keeptime: 1200
+
+# plugin list
+plugins:
+    - help
+    - debug
+    - apiserver
+    - hitokoto
+    - tuling123
+
+# apiserver plugin configration
+api_port:  3200
+api_token: ''
+
+# tuling bot
+tuling_key: ""
+tuling_loc: ""

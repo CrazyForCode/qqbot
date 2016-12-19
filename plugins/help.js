@@ -30,7 +30,7 @@
 
   bundle = JSON.parse(fs.readFileSync(file_path));
 
-  VERSION_INFO = "v" + bundle.version + " qqbot\nhttp://github.com/xhan/qqbot\n本工具还由 糗事百科 热血赞助！";
+  VERSION_INFO = "v" + bundle.version + " qqbot\n这个bot目前由cfc维护";
 
 
   /*
