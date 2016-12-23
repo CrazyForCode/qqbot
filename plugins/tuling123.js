@@ -6,16 +6,10 @@
 
 var config = require('../config');
 var request = require('request');
-var Log = require('log');
 
 (function() {
-  var log = new Log('debug');
   module.exports = function(content, send, robot, message) {
-    if (message.at == null && message.from_user.account != '1265622079') {
-        return "nothing";
-    }
 
-    // log.debug(JSON.stringify(message));
     if (content.match(/^\s*$/)) {
       return send('找' + config.nickname + '有什么事呀 (^O^)／');
     } else {
@@ -35,7 +29,7 @@ var Log = require('log');
         }
         if (response.statusCode == 200) {
           var data = JSON.parse(body);
-          var reply = '@' + message.from_user.nick + '  ';
+          var reply = (message.type == 'group_message') ? ('@' + message.from_user.nick + '  ') : '';
           switch (data.code) {
             case 100000:
               reply += data.text;
@@ -53,8 +47,3 @@ var Log = require('log');
   };
 
 }).call(this);
-
-
-function parse_tuling_response(data) {
-  
-}

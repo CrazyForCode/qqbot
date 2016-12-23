@@ -8,33 +8,23 @@ http://hitokoto.cn/
 
 var request = require('request');
 
+
 (function() {
   module.exports = function(content, send, robot, message) {
-    if (!content.match(/^hitokoto/)) {
-      return;
-    }
-
     var url = 'http://api.hitokoto.cn/'
-    if (content.match(/^hitokoto\s*help\s*/)) {
-      
-      fs.readFile('/Users/ShinCurry/Downloads/0067sJVNgw1f8rymvwm7pj308c08cmxi.jpg', 'utf8', function(err, data) {
-        if (err) {
-          send(err)
-        }
-        send(data)
-      });
-      //send('hitokoto anime/comic/game/novel');
+    if (content.match(/\s*help\s*/)) {
+      send('hitokoto [anime, comic, game, novel, other]');
       return;
-    } else if (content.match(/^hitokoto\s*anime\s*$/)) {
+    } else if (content.match(/\s*anime\s*$/)) {
       url += '?c=a';
-    } else if (content.match(/^hitokoto\s*comic\s*$/)) {
+    } else if (content.match(/\s*comic\s*$/)) {
       url += '?c=b';
-    } else if (content.match(/^hitokoto\s*game\s*$/)) {
+    } else if (content.match(/\s*game\s*$/)) {
       url += '?c=c';
-    } else if (content.match(/^hitokoto\s*novel\s*$/)) {
+    } else if (content.match(/\s*novel\s*$/)) {
       url += '?c=d';
-    } else if (content.match(/^hitokoto\s*other\s*$/)) {
-      var i = int(Math.random()*10)
+    } else if (content.match(/\s*other\s*$/)) {
+      var i = Math.random()*10 | 0
       var p = ['e', 'f', 'g']
       url += '?c='+p[i];
     }
