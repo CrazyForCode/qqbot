@@ -35,10 +35,10 @@ var sqlite3 = require('sqlite3').verbose();
           send(at + '你是智障么为什么要填零');
           return;
         }
-        var query = 'SELECT name FROM foodlist WHERE user_id = "' + user + '"'
-        + (result[1] != '' ? ' LIMIT 0,' + result[1] : '');
 
-        db.all(query, function(err, rows) {
+        db.all('SELECT name FROM foodlist WHERE user_id = $user_id', {
+          $user_id: user
+        }, function(err, rows) {
           if (err) {
             console.log(err);
           }
@@ -57,20 +57,46 @@ var sqlite3 = require('sqlite3').verbose();
         // add
         console.log('## result: ' + result[1]);
         
-        db.run('INSERT INTO foodlist (name, user_id) VALUES ("' + result[1] + '", "' + user + '")');
-        send('添加成功');
+
+        db.run('INSERT INTO foodlist (name, user_id) VALUES ($name, $user_id)', {
+          $name: result[1],
+          $user_id: user
+        }, function(err) {
+          if (err) {
+            console.log(err);
+            send('添加失败');
+          }
+
+          send('添加成功');
+        });
+        
         return;
       } else if (result = content.match(/\s*remove\s*all\s*$/)) {
         // remove all 
-        var section = 
-        db.run('DELETE FROM foodlist WHERE user_id = "' + user + '"');
-        send('删除所有成功');
+        db.run('DELETE FROM foodlist WHERE user_id = $user_id', {
+          $user_id: user
+        }, function(err) {
+          if (err) {
+            console.log(err);
+            send('删除所有失败');
+          }
+
+          send('删除所有成功');
+        }); 
         return;
       } else if (result = content.match(/\s*remove\s*([\u4e00-\u9fa5_a-zA-Z0-9]+)\s*/)) {
         // remove
-        console.log('## result: ' + result[1]);
-        db.run('DELETE FROM foodlist WHERE name = "' + result[1] + '" AND user_id = "' + user +  '"');
-        send('删除成功');
+        db.run('DELETE FROM foodlist WHERE name = $name AND user_id = $user_id', {
+          $name: result[1],
+          $user_id: user
+        }, function(err) {
+          if (err) {
+            console.log(err);
+            send('删除失败');
+          }
+
+          send('删除成功');
+        });
         return;
       } else if (result = content.match(/\s*roll\s*(\d*)$/)) {
         // roll
@@ -80,7 +106,10 @@ var sqlite3 = require('sqlite3').verbose();
         }
         var query = 'SELECT name FROM foodlist WHERE user_id = "' + user  + '" ORDER BY random() LIMIT '
         + (result[1] != '' ? result[1] : '1');
-        db.all(query, function(err, rows) {
+        db.all('SELECT name FROM foodlist WHERE user_id = $user_id ORDER BY random() LIMIT count', {
+          $user_id: user,
+          $count: result[1] != '' ? result[1] : '1'
+        }, function(err, rows) {
           if (err) {
             console.log(err);
           }
